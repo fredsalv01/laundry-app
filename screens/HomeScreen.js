@@ -16,11 +16,12 @@ import { EvilIcons } from "@expo/vector-icons";
 import Services from "../components/Services";
 import Carousel from "../components/Carousel";
 import DressItems from "../components/DressItems";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../reducer/ProductReducer";
 
 export default function HomeScreen() {
   const cart = useSelector((state) => state.cart.cart);
-	console.log(cart)
+  console.log("cart", cart);
   const [displayCurrenAddress, setDisplayCurrentAddress] = useState(
     "we are loading your location..."
   );
@@ -83,7 +84,19 @@ export default function HomeScreen() {
       }
     }
   };
+  const products = useSelector((state) => state.product.products);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (products.length > 0) return;
+    const fetchProducts = () => {
+      services.map((item) => {
+        dispatch(getProducts(item));
+      });
+    };
+    fetchProducts();
+  }, [products]);
 
+  console.log("products", products);
   const services = [
     {
       id: "0",
@@ -194,7 +207,7 @@ export default function HomeScreen() {
       <Services />
 
       {/* render all the products */}
-      {services.map((service, index) => (
+      {products.map((service, index) => (
         <DressItems key={index} item={service} />
       ))}
     </ScrollView>
