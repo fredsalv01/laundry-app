@@ -9,6 +9,7 @@ import {
 	TextInput,
 	ScrollView,
 	Platform,
+	TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
@@ -24,6 +25,9 @@ export default function HomeScreen() {
 	const cart = useSelector((state) => state.cart.cart);
 	const total = cart
 		.map((item) => item.quantity * item.price)
+		.reduce((curr, prev) => curr + prev, 0);
+	const totalItems = cart
+		.map((item) => item.quantity)
 		.reduce((curr, prev) => curr + prev, 0);
 	console.log("cart", cart);
 	const [displayCurrenAddress, setDisplayCurrentAddress] = useState(
@@ -222,7 +226,7 @@ export default function HomeScreen() {
 						backgroundColor: "#088F8F",
 						padding: 10,
 						margin: 10,
-						marginBottom: Platform.OS === "android" ? 25 : 40,
+						marginBottom: Platform.OS === "android" ? 15 : 15,
 						borderRadius: 7,
 						flexDirection: "row",
 						alignItems: "center",
@@ -230,16 +234,25 @@ export default function HomeScreen() {
 					}}
 				>
 					<View>
-						<Text style={{ fontSize: 16, fontWeight: "500", color: "white" }}>
-							{cart.length} items
+						<Text style={{ fontSize: 17, fontWeight: "500", color: "white" }}>
+							{totalItems} items - ${total}
 						</Text>
-						<Text style={{ fontSize: 13, fontWeight: "400", color: "white", marginBottom: 8 }}>
+						<Text
+							style={{
+								fontSize: 13,
+								fontWeight: "400",
+								color: "white",
+								marginBottom: 8,
+							}}
+						>
 							extra charges might be applied
 						</Text>
 					</View>
-					<Pressable>
-						<Text>Proceed to pickup</Text>
-					</Pressable>
+					<TouchableOpacity>
+						<Text style={{ fontSize: 17, fontWeight: "600", color: "white", padding: 15, }}>
+							Go to Pickup
+						</Text>
+					</TouchableOpacity>
 				</Pressable>
 			)}
 		</>
