@@ -1,8 +1,13 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../reducer/CartReducer";
-import { incrementQty } from "../reducer/ProductReducer";
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  incremntQuantity,
+} from "../reducer/CartReducer";
+import { decrementQty, incrementQty } from "../reducer/ProductReducer";
 
 const DressItems = ({ item }) => {
   const dispatch = useDispatch();
@@ -40,6 +45,10 @@ const DressItems = ({ item }) => {
                 backgroundColor: "#E0E0E0",
                 justifyContent: "center",
                 alignContent: "center",
+              }}
+              onPress={() => {
+                dispatch(decrementQuantity(item)); // cart
+                dispatch(decrementQty(item)); // product
               }}
             >
               <Text
@@ -82,6 +91,10 @@ const DressItems = ({ item }) => {
                 backgroundColor: "#E0E0E0",
                 justifyContent: "center",
                 alignItems: "center",
+              }}
+              onPress={() => {
+                dispatch(incrementQuantity(item)); // cart
+                dispatch(incrementQty(item)); // product
               }}
             >
               <Text
@@ -155,7 +168,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginVertical: 10,
     borderRadius: 8,
-    color: "#088F0F",
+    color: "#088F8F",
     fontSize: 17,
     fontWeight: "bold",
   },

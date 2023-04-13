@@ -49,7 +49,7 @@ export const CartSlice = createSlice({
 export const {
   addToCart,
   removeFromCart,
-  incremntQuantity,
+  incrementQuantity,
   decrementQuantity,
 } = CartSlice.actions;
 
