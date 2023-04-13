@@ -20,25 +20,39 @@ import Carousel from "../components/Carousel";
 import DressItems from "../components/DressItems";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../reducer/ProductReducer";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen() {
+	// cart selector and total amount cart
 	const cart = useSelector((state) => state.cart.cart);
+
+  //navigation
+	const navigation = useNavigation();
+
 	const total = cart
 		.map((item) => item.quantity * item.price)
 		.reduce((curr, prev) => curr + prev, 0);
+	// totalItems cart
 	const totalItems = cart
 		.map((item) => item.quantity)
 		.reduce((curr, prev) => curr + prev, 0);
 	console.log("cart", cart);
+
+	// show current address state
 	const [displayCurrenAddress, setDisplayCurrentAddress] = useState(
 		"we are loading your location..."
 	);
+
+	// use state location
 	const [locationServicesEnabled, setLocationServicesEnabled] = useState(false);
+
+	//getLocation
 	useEffect(() => {
 		checkIfLocationEnable();
 		getCurrentLocation();
 	}, []);
 
+	// functions
 	const checkIfLocationEnable = async () => {
 		let enabled = await Location.hasServicesEnabledAsync();
 		if (!enabled) {
@@ -60,6 +74,7 @@ export default function HomeScreen() {
 		}
 	};
 
+	// get current location
 	const getCurrentLocation = async () => {
 		let { status } = await Location.requestForegroundPermissionsAsync();
 		if (status !== "granted") {
@@ -92,8 +107,12 @@ export default function HomeScreen() {
 			}
 		}
 	};
+
+	// get products state
 	const products = useSelector((state) => state.product.products);
+
 	const dispatch = useDispatch();
+
 	useEffect(() => {
 		if (products.length > 0) return;
 		const fetchProducts = () => {
@@ -104,7 +123,6 @@ export default function HomeScreen() {
 		fetchProducts();
 	}, [products]);
 
-	console.log("products", products);
 	const services = [
 		{
 			id: "0",
@@ -248,8 +266,15 @@ export default function HomeScreen() {
 							extra charges might be applied
 						</Text>
 					</View>
-					<TouchableOpacity>
-						<Text style={{ fontSize: 17, fontWeight: "600", color: "white", padding: 15, }}>
+					<TouchableOpacity onPress={() => navigation.navigate("PickUp")}>
+						<Text
+							style={{
+								fontSize: 17,
+								fontWeight: "600",
+								color: "white",
+								padding: 15,
+							}}
+						>
 							Go to Pickup
 						</Text>
 					</TouchableOpacity>
