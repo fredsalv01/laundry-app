@@ -6,11 +6,14 @@ import { incrementQty } from "../reducer/ProductReducer";
 
 const DressItems = ({ item }) => {
   const dispatch = useDispatch();
-	const addItemToCart = () => {
-		dispatch(addToCart(item)) // cart reducer
-		dispatch(incrementQty(item)) // product
-	}
-	const product = useSelector((state) => state.product.products);
+
+  const addItemToCart = () => {
+    dispatch(addToCart(item)); // cart reducer
+    dispatch(incrementQty(item)); // product
+  };
+
+  const cart = useSelector((state) => state.cart.cart);
+
   return (
     <View>
       <View style={styles.ClotheCard}>
@@ -19,9 +22,86 @@ const DressItems = ({ item }) => {
           <Text style={styles.Name}>{item.name}</Text>
           <Text style={styles.Price}>${item.price}</Text>
         </View>
-        <Pressable onPress={addItemToCart} style={styles.AddBtn}>
-          <Text style={styles.BtnText}>Add</Text>
-        </Pressable>
+        {cart.some((c) => c.id === item.id) ? (
+          <Pressable
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+          >
+            {/* minus button */}
+            <Pressable
+              style={{
+                width: 35,
+                height: 35,
+                borderRadius: 13,
+                borderColor: "#BEBEBE",
+                backgroundColor: "#E0E0E0",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#088F8F",
+                  paddingHorizontal: 6,
+                  fontWeight: "600",
+                  textAlign: "center",
+                }}
+              >
+                -
+              </Text>
+            </Pressable>
+            {/* quantity */}
+            <Pressable
+              style={{
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 19,
+                  color: "#088F8F",
+                  paddingHorizontal: 8,
+                  fontWeight: "600",
+                }}
+              >
+                {item.quantity}
+              </Text>
+            </Pressable>
+            {/* plus button */}
+            <Pressable
+              style={{
+                width: 35,
+                height: 35,
+                borderRadius: 13,
+                borderColor: "#BEBEBE",
+                backgroundColor: "#E0E0E0",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: "#088F8F",
+                  paddingHorizontal: 6,
+                  fontWeight: "600",
+                  textAlign: "center",
+                }}
+              >
+                +
+              </Text>
+            </Pressable>
+          </Pressable>
+        ) : (
+          <Pressable onPress={addItemToCart} style={styles.AddBtn}>
+            <Text style={styles.BtnText}>Add</Text>
+          </Pressable>
+        )}
       </View>
     </View>
   );
