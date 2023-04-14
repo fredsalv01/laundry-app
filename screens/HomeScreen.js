@@ -36,7 +36,7 @@ export default function HomeScreen() {
 	const totalItems = cart
 		.map((item) => item.quantity)
 		.reduce((curr, prev) => curr + prev, 0);
-	console.log("cart", cart);
+	
 
 	// show current address state
 	const [displayCurrenAddress, setDisplayCurrentAddress] = useState(
