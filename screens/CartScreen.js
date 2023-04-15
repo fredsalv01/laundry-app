@@ -6,9 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
 import { decrementQuantity, incrementQuantity } from "../reducer/CartReducer";
 import { decrementQty, incrementQty } from "../reducer/ProductReducer";
+import { Image } from "react-native";
 
 const CartScreen = () => {
 	const cart = useSelector((state) => state.cart.cart);
+	console.log(cart);
 	const dispatch = useDispatch();
 	const total = cart
 		.map((item) => item.quantity * item.price)
@@ -56,7 +58,10 @@ const CartScreen = () => {
 									marginVertical: 10,
 								}}
 							>
-								<Text>{item.name}</Text>
+								<View>
+									<Image source={{ uri: item.image }} style={styles.Image} />
+									<Text style={{ textAlign: "center", paddingVertical: 5 }}>{item.name}</Text>
+								</View>
 								<Pressable style={styles.ButtonsContainer}>
 									<Pressable
 										onPress={() => {
@@ -106,5 +111,9 @@ const styles = StyleSheet.create({
 		color: "#088F8F",
 		paddingHorizontal: 6,
 		fontWeight: "600",
+	},
+	Image: {
+		width: 50,
+		height: 50,
 	},
 });
