@@ -13,6 +13,7 @@ import moment from "moment-jalaali";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { DELIVERY_TIMES, DELIVERY_DATES } from "../data/data";
+import { Alert } from "react-native";
 
 const PickupScreen = () => {
 	const currentDate = new Date();
@@ -36,7 +37,32 @@ const PickupScreen = () => {
 	const totalItems = cart
 		.map((item) => item.quantity)
 		.reduce((curr, prev) => curr + prev, 0);
-	console.log("cart", cart);
+
+	const proceedToCart = () => {
+		if (!selectedDate || !selectedTime || !selectedDeliveryDate) {
+			Alert.alert(
+				"Empty or invalid date or time",
+				"Please select all the fields",
+				[
+					// {
+					// 	text: "Cancel",
+					// 	onPress: () => console.log("Cancel pressed"),
+					// 	style: "cancel",
+					// },
+					{
+						text: "Ok",
+						onPress: () => console.log("Ok pressed"),
+						style: "cancel",
+					},
+				],
+				{ cancelable: false }
+			);
+		}
+		if (selectedDate && selectedTime && selectedDeliveryDate) {
+			navigation.navigate("Cart");
+		}
+	};
+
 	const [selectedDate, setSelectedDate] = useState("");
 	const [selectedTime, setSelectedTime] = useState("");
 	const [selectedDeliveryDate, setSelectedDeliveryDate] = useState("");
@@ -272,7 +298,7 @@ const PickupScreen = () => {
 								},
 								shadowOpacity: 0.25,
 							}}
-							onPress={() => navigation.navigate("PickUp")}
+							onPress={() => proceedToCart()}
 						>
 							<Text
 								style={{
