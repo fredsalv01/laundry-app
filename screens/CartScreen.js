@@ -16,7 +16,6 @@ import { Image } from "react-native";
 
 const CartScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
   const dispatch = useDispatch();
   const total = cart
     .map((item) => item.quantity * item.price)

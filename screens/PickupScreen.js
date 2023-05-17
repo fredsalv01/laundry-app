@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { DELIVERY_TIMES, DELIVERY_DATES } from "../data/data";
 import { Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const PickupScreen = () => {
   const currentDate = new Date();
@@ -44,11 +45,6 @@ const PickupScreen = () => {
         "Empty or invalid date or time",
         "Please select all the fields",
         [
-          // {
-          // 	text: "Cancel",
-          // 	onPress: () => console.log("Cancel pressed"),
-          // 	style: "cancel",
-          // },
           {
             text: "Ok",
             onPress: () => {},
@@ -76,12 +72,29 @@ const PickupScreen = () => {
   return (
     <>
       <View>
+        <View
+          style={{
+            marginHorizontal: 10,
+            fontSize: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 5
+          }}
+        >
+          <Ionicons
+            onPress={() => navigation.goBack()}
+            name="arrow-back"
+            size={24}
+            color="black"
+          />
+          <Text>Back Home</Text>
+        </View>
         <Text
           style={{
             fontSize: 16,
             fontWeight: "500",
             marginHorizontal: 20,
-            marginTop: 20,
+            marginTop: 25,
           }}
         >
           Enter Address
