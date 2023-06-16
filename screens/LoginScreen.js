@@ -5,15 +5,19 @@ import {
 	SafeAreaView,
 	TextInput,
 	KeyboardAvoidingView,
+	TouchableOpacity,
 } from 'react-native';
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import Wrapper from '../components/Wrapper';
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const navigation = useNavigation();
 
 	return (
 		<SafeAreaView
@@ -24,7 +28,7 @@ const LoginScreen = () => {
 				padding: 10,
 			}}
 		>
-			<KeyboardAvoidingView>
+			<Wrapper>
 				<View
 					style={{
 						justifyContent: 'center',
@@ -52,6 +56,8 @@ const LoginScreen = () => {
 							placeholder="Email"
 							placeholderTextColor={'black'}
 							style={{
+								paddingBottom: 4,
+								fontSize: email ? 18 : 18,
 								borderBottomWidth: 1,
 								borderBottomColor: 'gray',
 								width: 300,
@@ -63,25 +69,91 @@ const LoginScreen = () => {
 					</View>
 				</View>
 
-				<View style={{ marginTop: 40 }}>
+				<View style={{ marginTop: 20 }}>
 					<View style={{ flexDirection: 'row', alignItems: 'center', gap: 13 }}>
 						<MaterialIcons name="lock-outline" size={24} color="black" />
 						<TextInput
 							placeholder="Password"
 							placeholderTextColor={'black'}
 							style={{
+								paddingBottom: 4,
 								borderBottomWidth: 1,
 								borderBottomColor: 'gray',
 								width: 300,
 								marginVertical: 10,
+								fontSize: password ? 18 : 18,
 							}}
 							value={password}
 							onChangeText={(text) => setPassword(text)}
 							secureTextEntry
 						/>
 					</View>
+
+					<TouchableOpacity
+						style={{
+							width: 200,
+							backgroundColor: '#318CE7',
+							padding: 15,
+							borderRadius: 7,
+							marginTop: 50,
+							marginLeft: 'auto',
+							marginRight: 'auto',
+						}}
+					>
+						<Text
+							style={{
+								fontSize: 18,
+								textAlign: 'center',
+								color: 'white',
+								fontWeight: 'bold',
+								//shadow
+								shadowColor: '#000',
+								shadowOffset: {
+									width: 0,
+									height: 2,
+								},
+								shadowOpacity: 0.25,
+								shadowRadius: 3.84,
+							}}
+						>
+							Login
+						</Text>
+					</TouchableOpacity>
 				</View>
-			</KeyboardAvoidingView>
+
+				<View
+					style={{
+						marginTop: 40,
+						flexDirection: 'row',
+						justifyContent: 'center',
+						alignItems: 'center',
+						gap: 10,
+					}}
+				>
+					<Text
+						style={{
+							color: 'gray',
+							fontSize: 18,
+							fontWeight: 400,
+						}}
+					>
+						Don't have an account?
+					</Text>
+					<TouchableOpacity onPress={() => navigation.navigate('Register')}>
+						<Text
+							style={{
+								color: 'gray',
+								fontSize: 18,
+								fontWeight: 500,
+								marginLeft: 'auto',
+								marginRight: 'auto',
+							}}
+						>
+							Sign Up
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</Wrapper>
 		</SafeAreaView>
 	);
 };
