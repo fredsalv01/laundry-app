@@ -99,6 +99,8 @@ const LoginScreen = () => {
 							marginLeft: 'auto',
 							marginRight: 'auto',
 						}}
+
+						onPress={() => navigation.navigate('Home')}
 					>
 						<Text
 							style={{

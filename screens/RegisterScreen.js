@@ -6,6 +6,7 @@ import {
 	SafeAreaView,
 	TextInput,
 	TouchableOpacity,
+	Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,6 +20,25 @@ const RegisterScreen = () => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const navigation = useNavigation();
+
+	const register = () => {
+		if (
+			email === '' ||
+			password === '' ||
+			confirmPassword === '' ||
+			phone === ''
+		) {
+			Alert.alert('ERROR', 'Complete all fields', [
+				{ text: 'OK', onPress: () => console.log('OK Pressed') },
+			]);
+
+			if (password !== confirmPassword) {
+				Alert.alert('ERROR', 'Passwords do not match', [
+					{ text: 'OK', onPress: () => console.log('OK Pressed') },
+				]);
+			}
+		}
+	};
 
 	return (
 		<SafeAreaView
@@ -142,6 +162,7 @@ const RegisterScreen = () => {
 						marginLeft: 'auto',
 						marginRight: 'auto',
 					}}
+					onPress={register}
 				>
 					<Text
 						style={{
