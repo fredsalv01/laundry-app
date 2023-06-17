@@ -6,6 +6,8 @@ import {
 	TextInput,
 	KeyboardAvoidingView,
 	TouchableOpacity,
+	ActivityIndicator,
+	Alert
 } from 'react-native';
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,11 +15,54 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Wrapper from '../components/Wrapper';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useEffect } from 'react';
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const navigation = useNavigation();
+	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const unsuscribe = auth.onAuthStateChanged((authUser) => {
+			if (authUser) {
+				navigation.navigate('Home');
+			}
+		});
+
+		return unsuscribe;
+	}, [])
+
+	const cleanForm = () => {
+		setEmail('');
+		setPassword('');
+	}
+
+	const login = () => {
+		setLoading(true);
+		if (email === '' || password === '') {
+			Alert.alert('ERROR', 'Complete all fields', [
+				{ text: 'OK', onPress: () => {} },
+			]);
+		} else {
+			signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+				const user = userCredential.user;
+				console.log('user details', user)
+				setLoading(false);
+				cleanForm();
+				navigation.navigate('Home');
+			}).catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				Alert.alert('ERROR', errorMessage, [{ text: 'OK', onPress: () => {} }]);
+				setLoading(false);
+			})
+		}
+	}
+
+
 
 	return (
 		<SafeAreaView
@@ -100,7 +145,7 @@ const LoginScreen = () => {
 							marginRight: 'auto',
 						}}
 
-						onPress={() => navigation.navigate('Home')}
+						onPress={login}
 					>
 						<Text
 							style={{
