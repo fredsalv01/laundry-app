@@ -4,7 +4,6 @@ import {
 	View,
 	SafeAreaView,
 	TextInput,
-	KeyboardAvoidingView,
 	TouchableOpacity,
 	ActivityIndicator,
 	Alert,
@@ -18,6 +17,7 @@ import Wrapper from "../components/Wrapper";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useEffect } from "react";
+import Loader from "../components/Loader";
 
 const LoginScreen = () => {
 	const [email, setEmail] = useState("");
@@ -54,7 +54,6 @@ const LoginScreen = () => {
 			signInWithEmailAndPassword(auth, email, password)
 				.then((userCredential) => {
 					const user = userCredential.user;
-					console.log("user details", user);
 					setLoading(false);
 					cleanForm();
 					navigation.navigate("Home");
@@ -79,97 +78,82 @@ const LoginScreen = () => {
 				padding: 10,
 			}}
 		>
-			{loading ? (
-				<ActivityIndicator
+			<Wrapper>
+				<View
 					style={{
-						flexDirection: "row",
 						justifyContent: "center",
 						alignItems: "center",
-						flex: 1,
+						marginTop: 100,
 					}}
-					size="large"
-					color="#318CE7"
-				/>
-			) : (
-				<Wrapper>
-					<View
-						style={{
-							justifyContent: "center",
-							alignItems: "center",
-							marginTop: 100,
-						}}
-					>
-						<Text
-							style={{ fontSize: 20, color: "#662d91", fontWeight: "bold" }}
-						>
-							Sign In
-						</Text>
+				>
+					<Text style={{ fontSize: 20, color: "#662d91", fontWeight: "bold" }}>
+						Sign In
+					</Text>
 
-						<Text style={{ fontSize: 18, marginTop: 8, fontWeight: "500" }}>
-							Sign in to your account
-						</Text>
-					</View>
+					<Text style={{ fontSize: 18, marginTop: 8, fontWeight: "500" }}>
+						Sign in to your account
+					</Text>
+				</View>
 
-					<View style={{ marginTop: 50 }}>
-						<View
-							style={{ flexDirection: "row", alignItems: "center", gap: 13 }}
-						>
-							<MaterialCommunityIcons
-								name="email-outline"
-								size={24}
-								color="black"
-							/>
-							<TextInput
-								placeholder="Email"
-								placeholderTextColor={"black"}
-								style={{
-									paddingBottom: 4,
-									fontSize: email ? 18 : 18,
-									borderBottomWidth: 1,
-									borderBottomColor: "gray",
-									width: 300,
-									marginVertical: 10,
-								}}
-								value={email}
-								onChangeText={(text) => setEmail(text)}
-							/>
-						</View>
-					</View>
-
-					<View style={{ marginTop: 20 }}>
-						<View
-							style={{ flexDirection: "row", alignItems: "center", gap: 13 }}
-						>
-							<MaterialIcons name="lock-outline" size={24} color="black" />
-							<TextInput
-								placeholder="Password"
-								placeholderTextColor={"black"}
-								style={{
-									paddingBottom: 4,
-									borderBottomWidth: 1,
-									borderBottomColor: "gray",
-									width: 300,
-									marginVertical: 10,
-									fontSize: password ? 18 : 18,
-								}}
-								value={password}
-								onChangeText={(text) => setPassword(text)}
-								secureTextEntry
-							/>
-						</View>
-
-						<TouchableOpacity
+				<View style={{ marginTop: 50 }}>
+					<View style={{ flexDirection: "row", alignItems: "center", gap: 13 }}>
+						<MaterialCommunityIcons
+							name="email-outline"
+							size={24}
+							color="black"
+						/>
+						<TextInput
+							placeholder="Email"
+							placeholderTextColor={"black"}
 							style={{
-								width: 200,
-								backgroundColor: "#318CE7",
-								padding: 15,
-								borderRadius: 7,
-								marginTop: 50,
-								marginLeft: "auto",
-								marginRight: "auto",
+								paddingBottom: 4,
+								fontSize: email ? 18 : 18,
+								borderBottomWidth: 1,
+								borderBottomColor: "gray",
+								width: 300,
+								marginVertical: 10,
 							}}
-							onPress={login}
-						>
+							value={email}
+							onChangeText={(text) => setEmail(text)}
+						/>
+					</View>
+				</View>
+
+				<View style={{ marginTop: 20 }}>
+					<View style={{ flexDirection: "row", alignItems: "center", gap: 13 }}>
+						<MaterialIcons name="lock-outline" size={24} color="black" />
+						<TextInput
+							placeholder="Password"
+							placeholderTextColor={"black"}
+							style={{
+								paddingBottom: 4,
+								borderBottomWidth: 1,
+								borderBottomColor: "gray",
+								width: 300,
+								marginVertical: 10,
+								fontSize: password ? 18 : 18,
+							}}
+							value={password}
+							onChangeText={(text) => setPassword(text)}
+							secureTextEntry
+						/>
+					</View>
+
+					<TouchableOpacity
+						style={{
+							width: 200,
+							backgroundColor: "#318CE7",
+							padding: 15,
+							borderRadius: 7,
+							marginTop: 50,
+							marginLeft: "auto",
+							marginRight: "auto",
+						}}
+						onPress={login}
+					>
+						{loading ? (
+							<ActivityIndicator size="small" color="white" />
+						) : (
 							<Text
 								style={{
 									fontSize: 18,
@@ -188,43 +172,43 @@ const LoginScreen = () => {
 							>
 								Login
 							</Text>
-						</TouchableOpacity>
-					</View>
+						)}
+					</TouchableOpacity>
+				</View>
 
-					<View
+				<View
+					style={{
+						marginTop: 40,
+						flexDirection: "row",
+						justifyContent: "center",
+						alignItems: "center",
+						gap: 10,
+					}}
+				>
+					<Text
 						style={{
-							marginTop: 40,
-							flexDirection: "row",
-							justifyContent: "center",
-							alignItems: "center",
-							gap: 10,
+							color: "gray",
+							fontSize: 18,
+							fontWeight: 400,
 						}}
 					>
+						Don't have an account?
+					</Text>
+					<TouchableOpacity onPress={() => navigation.navigate("Register")}>
 						<Text
 							style={{
 								color: "gray",
 								fontSize: 18,
-								fontWeight: 400,
+								fontWeight: 500,
+								marginLeft: "auto",
+								marginRight: "auto",
 							}}
 						>
-							Don't have an account?
+							Sign Up
 						</Text>
-						<TouchableOpacity onPress={() => navigation.navigate("Register")}>
-							<Text
-								style={{
-									color: "gray",
-									fontSize: 18,
-									fontWeight: 500,
-									marginLeft: "auto",
-									marginRight: "auto",
-								}}
-							>
-								Sign Up
-							</Text>
-						</TouchableOpacity>
-					</View>
-				</Wrapper>
-			)}
+					</TouchableOpacity>
+				</View>
+			</Wrapper>
 		</SafeAreaView>
 	);
 };
