@@ -131,7 +131,7 @@ export default function HomeScreen() {
 				items.push(doc.data());
 			});
 			items?.map((service) => dispatch(getProducts(service)));
-			setTimeout(() => setLoading(false), 3000);
+			setTimeout(() => setLoading(false), 2000);
 		};
 		try {
 			fetchProducts();
