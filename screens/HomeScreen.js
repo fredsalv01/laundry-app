@@ -161,7 +161,10 @@ export default function HomeScreen() {
 								<Text>{displayCurrenAddress}</Text>
 							</View>
 
-							<Pressable style={{ marginLeft: "auto", marginRight: 7 }}>
+							<Pressable
+								onPress={() => navigation.navigate("Profile")}
+								style={{ marginLeft: "auto", marginRight: 7 }}
+							>
 								<Image
 									style={{ width: 40, height: 40, borderRadius: 25 }}
 									source={{

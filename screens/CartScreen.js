@@ -54,8 +54,6 @@ const CartScreen = () => {
 			return;
 		}
 
-		console.log("init payment intent", response);
-
 		const initResponse = await initPaymentSheet({
 			merchantDisplayName: "Wishy Washy",
 			paymentIntentClientSecret: response.data.data,
