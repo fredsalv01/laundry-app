@@ -4,6 +4,8 @@ import {
 	View,
 	ScrollView,
 	TouchableOpacity,
+	ActivityIndicator,
+	Alert,
 } from "react-native";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,36 +46,28 @@ const CartScreen = () => {
 
 	const onCheckout = async () => {
 		const response = await createPaymentIntent({
-			amount: Math.floor(total * 100),
+			amount: Math.floor((total + 50) * 100),
 		});
-		console.log(response.data.data);
+
 		if (response.error) {
 			Alert.alert("Error", "There was an error creating the payment intent");
 			return;
 		}
 
-		// init payment sheet
-		console.log("init payment sheet");
+		console.log("init payment intent", response);
+
 		const initResponse = await initPaymentSheet({
-			merchantDisplayName: "WishiWashy Peru",
+			merchantDisplayName: "Wishy Washy",
 			paymentIntentClientSecret: response.data.data,
 		});
-		console.log("initResponse", initResponse);
+
 		if (initResponse.error) {
-			console.log(initResponse.error);
-			Alert.alert("Error", "There was an error initializing the payment sheet");
+			console.log("init payment sheet error", initResponse.error);
+			Alert.alert("Error", "Something went wrong");
 			return;
 		}
 
-		// present payment sheet
-		const paymentResponse = await presentPaymentSheet();
-		if (paymentResponse.error) {
-			Alert.alert(
-				`Error code: ${paymentResponse.error.code}`,
-				paymentResponse.error.message
-			);
-			return;
-		}
+		await presentPaymentSheet();
 
 		// create order and get reference
 		onCreateOrder();
@@ -83,7 +77,7 @@ const CartScreen = () => {
 		const result = await createOrder({
 			items: cart,
 			total: total,
-			subtotal: totalItems,
+			subtotal: total + 50,
 			delivery: 50,
 			customer: {
 				name: "John Doe",
@@ -91,6 +85,8 @@ const CartScreen = () => {
 				address: "123, Baker Street",
 			},
 		});
+
+		console.log(result);
 
 		if (result.data?.status === "OK") {
 			Alert.alert(
