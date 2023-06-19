@@ -53,10 +53,12 @@ const CartScreen = () => {
 		}
 
 		// init payment sheet
+		console.log("init payment sheet");
 		const initResponse = await initPaymentSheet({
 			merchantDisplayName: "WishiWashy Peru",
 			paymentIntentClientSecret: response.data.data,
 		});
+		console.log("initResponse", initResponse);
 		if (initResponse.error) {
 			console.log(initResponse.error);
 			Alert.alert("Error", "There was an error initializing the payment sheet");
@@ -81,10 +83,8 @@ const CartScreen = () => {
 		const result = await createOrder({
 			items: cart,
 			total: total,
-			totalItems: totalItems,
-			deliveryFees: 0,
-			status: "pending",
-			createdAt: new Date().toISOString(),
+			subtotal: totalItems,
+			delivery: 50,
 			customer: {
 				name: "John Doe",
 				phone: "123456789",

@@ -3,11 +3,14 @@ import CartReducer from "../reducer/CartReducer";
 import ProductReducer from "../reducer/ProductReducer";
 import { apiSlice } from "../reducer/apiSlice";
 
+
 export default configureStore({
 	reducer: {
 		cart: CartReducer,
 		product: ProductReducer,
+		api: apiSlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware().concat(apiSlice.middleware),
 });
+ 

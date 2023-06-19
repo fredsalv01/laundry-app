@@ -112,7 +112,7 @@ const PickupScreen = () => {
             numberOfLines={2}
             placeholder="Enter Address"
             maxLength={100}
-            onChangeText={(text) => console.log(text)}
+            onChangeText={(text) => {}}
             style={{
               borderColor: "gray",
               borderWidth: 1,
